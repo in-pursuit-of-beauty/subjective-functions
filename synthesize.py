@@ -6,6 +6,8 @@ import numpy as np
 from scipy import ndimage
 import gram
 from gram import JoinMode
+import tensorflow as tf
+from keras.backend.tensorflow_backend import set_session
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Synthesize image from texture", formatter_class=argparse.ArgumentDefaultsHelpFormatter)
@@ -100,6 +102,14 @@ if __name__ == "__main__":
 
     width = args.output_width
     height = args.output_height or width
+
+    # allow growth
+    # from https://github.com/keras-team/keras/issues/4161#issuecomment-366031228
+    config = tf.ConfigProto()
+    config.gpu_options.allow_growth = True
+    config.log_device_placement = True
+    sess = tf.Session(config=config)
+    set_session(sess)  # set this TensorFlow session as the default session for Keras
 
     print("About to generate a {}x{} image, matching the Gram matrices for layers {} at {} distinct scales".format(width, height, args.layers, args.octaves))
 
