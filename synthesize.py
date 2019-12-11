@@ -86,7 +86,7 @@ if __name__ == "__main__":
     while os.path.exists(output_dir):
         output_dir = base_output_dir + ".{}".format(suffix)
         suffix += 1
-        if suffix > 100:
+        if suffix > 10000:
             print("Hmm, maybe in an infinite loop trying to create output directory")
             sys.exit(1)
 
